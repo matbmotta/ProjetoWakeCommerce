@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ProjetoWakeCommerce.Application.Interfaces;
 using ProjetoWakeCommerce.Entidades;
 
@@ -14,9 +15,9 @@ namespace ProjetoWakeCommerce.Application.Services
             this.dataContext = context;
         }
         #region OBTER
-        public async Task<List<Produto>> ObterProdutosPorFiltro()
+        public async Task<List<Produto>> ObterProdutosOrdenados()
         {
-            var listaProdutos = await dataContext.Produtos.ToListAsync();
+            var listaProdutos = await dataContext.Produtos.OrderBy(p => p.Nome).ThenBy(p => p.Estoque).ToListAsync();
             if (listaProdutos == null)
                 throw new Exception("Nenhum produto encontrado");
 
@@ -35,11 +36,27 @@ namespace ProjetoWakeCommerce.Application.Services
 
             return produto;
         }
+
+        public async Task<Produto> ObterProdutoPorNome(string nome)
+        {
+            if (nome.IsNullOrEmpty())
+                throw new Exception("O nome deve ser informado para essa busca");
+
+            var produto = await dataContext.Produtos.FirstOrDefaultAsync(p => p.Nome == nome);
+
+            if (produto == null)
+                throw new Exception("Produto não encontrado");  
+
+            return produto;
+        }
         #endregion
 
         #region INSERIR
         public async Task<List<Produto>> InserirProduto(Produto produto)
         {
+            if (produto.Valor < 0)
+                throw new Exception("O valor do produto não pode ser negativo");
+
             dataContext.Produtos.Add(produto);
             await dataContext.SaveChangesAsync();
 
@@ -54,10 +71,14 @@ namespace ProjetoWakeCommerce.Application.Services
 
             if (produtoBanco == null)
                 throw new Exception("Erro ao atualizar o produto");
+            if (produto.Valor < 0)
+                throw new Exception("O valor do produto não pode ser negativo");
 
             produtoBanco.Valor = produto.Valor;
             produtoBanco.Nome = produto.Nome;
             produtoBanco.Estoque = produto.Estoque;
+            produtoBanco.Tipo = produto.Tipo;
+            produtoBanco.DataAtualizacao = DateTime.Now;
 
             await dataContext.SaveChangesAsync();
 

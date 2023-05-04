@@ -28,7 +28,7 @@ namespace ProjetoWakeCommerce.Controllers
         [Produces("application/json", Type = typeof(List<Produto>))]
         public async Task<IActionResult> ObterProdutosPorFiltro()
         {
-            var produtos = await ProdutosService.ObterProdutosPorFiltro();
+            var produtos = await ProdutosService.ObterProdutosOrdenados();
 
             return Ok(produtos);
         }
@@ -40,9 +40,24 @@ namespace ProjetoWakeCommerce.Controllers
         [Route("obter-produto-por-id")]
         [HttpGet]
         [Produces("application/json", Type = typeof(Produto))]
-        public async Task<IActionResult> ObterPorId(int id)
+        public async Task<IActionResult> ObterProdutoPorId(int id)
         {
             var produto = await ProdutosService.ObterProdutoPorId(id);            
+
+            return Ok(produto);
+        }
+
+        /// <summary>
+        /// Obtém um produto específico pelo nome
+        /// </summary>
+        /// <param name="nome"></param>
+        /// <returns></returns>
+        [Route("obter-produto-por-nome")]
+        [HttpGet]
+        [Produces("application/json", Type = typeof(Produto))]
+        public async Task<IActionResult> ObterProdutoPorNome(string nome)
+        {
+            var produto = await ProdutosService.ObterProdutoPorNome(nome);
 
             return Ok(produto);
         }
