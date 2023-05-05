@@ -15,6 +15,7 @@ namespace ProjetoWakeCommerce.Application.Services
         {
             ProdutoRepositorio = produtoRepositorio;
         }
+
         #region OBTER
         public async Task<List<Produto>> ObterProdutosOrdenados()
         {

@@ -15,19 +15,63 @@ namespace WakeCommerce.Tests.Servicos
     [TestClass]
     public class ProdutosTeste
     {
-        private readonly Mock<Produto> mock = new Mock<Produto>();
+        private ProdutosService _produtoService;
+        private Mock<IProdutoRepositorio> _produtoRepositorioMock;
+
+        [TestInitialize]
+        public void InicializarTeste()
+        {
+            _produtoRepositorioMock = new Mock<IProdutoRepositorio>();
+            _produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+        }
 
         [TestMethod]
-        public void ObterTodosProdutos()
+        public async Task ObterProdutosOrdenados_DeveRetornarListaOrdenada()
         {
+            // Arrange
+            var produtosEsperados = new List<Produto>()
+            {
+            new Produto() { Nome = "Produto A", Estoque = 10 },
+            new Produto() { Nome = "Produto B", Estoque = 5 },
+            new Produto() { Nome = "Produto C", Estoque = 20 },
+            };
 
-            // act
-            var mock = new ProdutoRepositorioMock();
-            var produtoServico = new ProdutosService((IProdutoRepositorio)mock);
-            var servico = produtoServico.ObterProdutosOrdenados();
+            // Configuração do mock para retornar uma lista de produtos não ordenada
+            _produtoRepositorioMock.Setup(x => x.ObterTodos()).ReturnsAsync(new List<Produto>()
+            {
+            new Produto() { Nome = "Produto B", Estoque = 5 },
+            new Produto() { Nome = "Produto C", Estoque = 20 },
+            new Produto() { Nome = "Produto A", Estoque = 10 },
+            });
 
-            // assert
-            Assert.IsTrue(servico.IsCompletedSuccessfully);
+            // Act
+            var resultado = await _produtoService.ObterProdutosOrdenados();
+
+            // Assert
+            CollectionAssert.AreEqual(produtosEsperados, resultado, new ProdutoComparer());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Nenhum produto encontrado")]
+        public async Task ObterProdutosOrdenados_SemProdutos_DeveLancarExcecao()
+        {
+            // Configuração do mock para retornar uma lista de produtos vazia
+            _produtoRepositorioMock.Setup(x => x.ObterTodos()).ReturnsAsync(new List<Produto>());
+
+            // Act
+            var resultado = await _produtoService.ObterProdutosOrdenados();
+        }
+
+        private class ProdutoComparer : Comparer<Produto>
+        {
+            public override int Compare(Produto x, Produto y)
+            {
+                if (x.Nome == y.Nome)
+                {
+                    return x.Estoque.CompareTo(y.Estoque);
+                }
+                return x.Nome.CompareTo(y.Nome);
+            }
         }
     }
 }
