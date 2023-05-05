@@ -5,7 +5,13 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoWakeCommerce", "ProjetoWakeCommerce\ProjetoWakeCommerce.csproj", "{3A5B78E6-5A41-45B8-8A7B-079658722FE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testes", "Testes\Testes.csproj", "{C84BD36C-4390-45E7-9831-B3938A341544}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WakeCommerce.Tests", "Testes\WakeCommerce.Tests.csproj", "{C84BD36C-4390-45E7-9831-B3938A341544}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WakeCommerce.Database", "Data\WakeCommerce.Database.csproj", "{1EBB8597-255D-4DD0-9A7D-34C1C5992659}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WakeCommerce.Services", "Aplicacao\WakeCommerce.Services.csproj", "{9E667156-563C-47E0-B60D-3D258226B34C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WakeCommerce.Utils", "Utils\WakeCommerce.Utils.csproj", "{D01F1623-6D5F-4F1B-8384-24C60C4074DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{C84BD36C-4390-45E7-9831-B3938A341544}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C84BD36C-4390-45E7-9831-B3938A341544}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C84BD36C-4390-45E7-9831-B3938A341544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EBB8597-255D-4DD0-9A7D-34C1C5992659}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EBB8597-255D-4DD0-9A7D-34C1C5992659}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EBB8597-255D-4DD0-9A7D-34C1C5992659}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EBB8597-255D-4DD0-9A7D-34C1C5992659}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E667156-563C-47E0-B60D-3D258226B34C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E667156-563C-47E0-B60D-3D258226B34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E667156-563C-47E0-B60D-3D258226B34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E667156-563C-47E0-B60D-3D258226B34C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D01F1623-6D5F-4F1B-8384-24C60C4074DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D01F1623-6D5F-4F1B-8384-24C60C4074DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D01F1623-6D5F-4F1B-8384-24C60C4074DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D01F1623-6D5F-4F1B-8384-24C60C4074DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
