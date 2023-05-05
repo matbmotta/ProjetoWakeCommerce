@@ -1,5 +1,5 @@
-using ProjetoWakeCommerce.Utils;
 using System.ComponentModel.DataAnnotations;
+using WakeCommerce.Utils.Enums;
 
 namespace ProjetoWakeCommerce.Entidades
 {

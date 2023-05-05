@@ -1,4 +1,4 @@
-﻿namespace ProjetoWakeCommerce.Utils
+﻿namespace WakeCommerce.Utils.Enums
 {
     public enum TipoEnum
     {

@@ -41,29 +41,22 @@ namespace ProjetoWakeCommerce.Repositorio.Repositorios
             return await _ctx.Set<T>().FindAsync(entities);
         }
 
-        public async Task<T> Find(params object[] key)
-        {
-            return await _ctx.Set<T>().FindAsync(key);
-        }
-
-        public T First(Expression<Func<T, bool>> predicate)
-        {
-            return _ctx.Set<T>().Where(predicate).FirstOrDefault();
-        }
-
         public void Adicionar(T entity)
         {
             _ctx.Set<T>().Add(entity);
+            Commit();
         }
 
         public void Atualizar(T entity)
         {
             _ctx.Entry(entity).State = EntityState.Modified;
+            Commit();
         }
 
         public void Deletar(T entity)
         {
             _ctx.Remove(entity);
+            Commit();
         }
 
         public void Commit()

@@ -4,7 +4,7 @@ using ProjetoWakeCommerce.Application.Interfaces;
 using ProjetoWakeCommerce.Application.Services;
 using ProjetoWakeCommerce.Data;
 using ProjetoWakeCommerce.Entidades;
-using ProjetoWakeCommerce.Utils;
+using WakeCommerce.Utils.Enums;
 using Xunit.Sdk;
 
 namespace Testes

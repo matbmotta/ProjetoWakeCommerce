@@ -60,7 +60,6 @@ namespace ProjetoWakeCommerce.Application.Services
                 throw new Exception("O valor do produto não pode ser negativo");
 
             ProdutoRepositorio.Adicionar(produto);
-            ProdutoRepositorio.Commit();
 
             return (List<Produto>)await ProdutoRepositorio.ObterTodos();
         }
@@ -83,7 +82,6 @@ namespace ProjetoWakeCommerce.Application.Services
             produtoBanco.DataAtualizacao = DateTime.Now;
 
             ProdutoRepositorio.Atualizar(produtoBanco);
-            ProdutoRepositorio.Commit();
 
             return (List<Produto>)await ProdutoRepositorio.ObterTodos();
         }
@@ -99,7 +97,6 @@ namespace ProjetoWakeCommerce.Application.Services
 
 
             ProdutoRepositorio.Deletar(produto);
-            ProdutoRepositorio.Commit();
 
             return (List<Produto>)await ProdutoRepositorio.ObterTodos();
         }
