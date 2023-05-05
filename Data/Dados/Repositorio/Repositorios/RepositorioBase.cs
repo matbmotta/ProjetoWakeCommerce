@@ -13,6 +13,7 @@ namespace ProjetoWakeCommerce.Repositorio.Repositorios
     public class RepositorioBase<T> : IRepositorioBase<T>, IDisposable where T : class
     {
         protected DataContext _ctx = new DataContext();
+
         public RepositorioBase(DataContext ctx)
         {
             _ctx = ctx;
