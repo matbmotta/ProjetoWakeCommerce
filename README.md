@@ -13,6 +13,13 @@ Este projeto consiste em uma API desenvolvida em .NET 6 utilizando Entity Framew
 - Listar os produtos
 - Deletar um produto
 
+## Instalação
+
+Para executar a aplicação, é necessário ter o .NET 6 instalado em sua máquina. Além disso, é necessário clonar o repositório para a sua máquina local. Para clonar o repositório, utilize o seguinte comando:
+
+```bash
+  git clone https://github.com/seu-usuario/wake-commerce.git
+```    
 ## Executando a aplicação
 
 Para executar a aplicação, abra o terminal na pasta raiz do projeto e execute o seguinte comando:
@@ -21,14 +28,7 @@ Para executar a aplicação, abra o terminal na pasta raiz do projeto e execute 
   dotnet run --project  WakeCommerce
 ```
 Ou caso tenha o Visual Studio Instalado, abra a solution e rode o projeto.
-## Instalação
 
-Para executar a aplicação, é necessário ter o .NET 6 instalado em sua máquina. Além disso, é necessário clonar o repositório para a sua máquina local. Para clonar o repositório, utilize o seguinte comando:
-
-```bash
-  git clone https://github.com/seu-usuario/wake-commerce.git
-```
-    
 ## Utilizando o Entity Framework
 
  Neste projeto, utilizamos o code-first approach, ou seja, criamos as entidades em classes C# e o Entity Framework cria as tabelas no banco de dados automaticamente. Para criar o banco de dados, basta executar o seguinte comando no terminal:
