@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+Ôªøusing Microsoft.EntityFrameworkCore;
 using Moq;
 using ProjetoWakeCommerce.Application.Interfaces;
 using ProjetoWakeCommerce.Application.Services;
@@ -15,7 +15,7 @@ namespace WakeCommerce.Tests.Servicos
     [TestClass]
     public class ProdutosTeste
     {
-        private ProdutosService _produtoService;
+        private ProdutosService? _produtoService;
         private Mock<IProdutoRepositorio> _produtoRepositorioMock;
 
         [TestInitialize]
@@ -31,47 +31,305 @@ namespace WakeCommerce.Tests.Servicos
             // Arrange
             var produtosEsperados = new List<Produto>()
             {
-            new Produto() { Nome = "Produto A", Estoque = 10 },
-            new Produto() { Nome = "Produto B", Estoque = 5 },
-            new Produto() { Nome = "Produto C", Estoque = 20 },
+                new Produto()
+                {
+                    Id = 1,
+                    Nome = "Produto A",
+                    Estoque = 10,
+                    Tipo = TipoEnum.Vestuario,
+                    Valor = 50,
+                    DataCriacao = DateTime.Today,
+                    DataAtualizacao = DateTime.Today
+                },
+                new Produto()
+                {
+                    Id = 2,
+                    Nome = "Produto B",
+                    Estoque = 5,
+                    Tipo = TipoEnum.CamaMesaBanho,
+                    Valor = 55.2m,
+                    DataCriacao = DateTime.Today,
+                    DataAtualizacao = DateTime.Today
+                },
+                new Produto()
+                {
+                    Id = 3,
+                    Nome = "Produto C",
+                    Estoque = 20,
+                    Tipo = TipoEnum.Eletronico,
+                    Valor = 999.99m,
+                    DataCriacao = DateTime.Today,
+                    DataAtualizacao = DateTime.Today
+                },
             };
 
-            // ConfiguraÁ„o do mock para retornar uma lista de produtos n„o ordenada
-            _produtoRepositorioMock.Setup(x => x.ObterTodos()).ReturnsAsync(new List<Produto>()
+            // Configur√ß√£o do mock para retornar uma lista de produtos n√£o ordenada
+            var produtos = new List<Produto>()
             {
-            new Produto() { Nome = "Produto B", Estoque = 5 },
-            new Produto() { Nome = "Produto C", Estoque = 20 },
-            new Produto() { Nome = "Produto A", Estoque = 10 },
-            });
+               new Produto()
+                {
+                    Id = 2,
+                    Nome = "Produto B",
+                    Estoque = 5,
+                    Tipo = TipoEnum.CamaMesaBanho,
+                    Valor = 55.2m,
+                    DataCriacao = DateTime.Today,
+                    DataAtualizacao = DateTime.Today
+                },
+                new Produto()
+                {
+                    Id = 3,
+                    Nome = "Produto C",
+                    Estoque = 20,
+                    Tipo = TipoEnum.Eletronico,
+                    Valor = 999.99m,
+                    DataCriacao = DateTime.Today,
+                    DataAtualizacao = DateTime.Today
+                },
+                new Produto()
+                {
+                    Id = 1,
+                    Nome = "Produto A",
+                    Estoque = 10,
+                    Tipo = TipoEnum.Vestuario,
+                    Valor = 50,
+                    DataCriacao = DateTime.Today,
+                    DataAtualizacao = DateTime.Today
+                },
+            };
+
+            _produtoRepositorioMock.Setup(x => x.ObterTodos()).ReturnsAsync(produtos);
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
 
             // Act
-            var resultado = await _produtoService.ObterProdutosOrdenados();
+            var resultado = await produtoService.ObterProdutosOrdenados();
 
-            // Assert
-            CollectionAssert.AreEqual(produtosEsperados, resultado, new ProdutoComparer());
+            Assert.IsTrue(produtosEsperados.SequenceEqual(resultado));
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), "Nenhum produto encontrado")]
         public async Task ObterProdutosOrdenados_SemProdutos_DeveLancarExcecao()
         {
-            // ConfiguraÁ„o do mock para retornar uma lista de produtos vazia
+            // Configur√ß√£o do mock para retornar uma lista de produtos vazia
             _produtoRepositorioMock.Setup(x => x.ObterTodos()).ReturnsAsync(new List<Produto>());
 
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
             // Act
-            var resultado = await _produtoService.ObterProdutosOrdenados();
+            var resultado = await produtoService.ObterProdutosOrdenados();
+
+            // Assert - Expects Exception
         }
 
-        private class ProdutoComparer : Comparer<Produto>
+        [TestMethod]
+        public async Task DeveObterProdutoPorNome()
         {
-            public override int Compare(Produto x, Produto y)
+            // Arrange
+            var nomeProduto = "Nome do Produto";
+            var produtoEsperado = new Produto 
             {
-                if (x.Nome == y.Nome)
-                {
-                    return x.Estoque.CompareTo(y.Estoque);
-                }
-                return x.Nome.CompareTo(y.Nome);
-            }
+                Id = 1,
+                Nome = "Nome do Produto",
+                Estoque = 10,
+                Tipo = TipoEnum.Vestuario,
+                Valor = 50,
+                DataCriacao = DateTime.Today,
+                DataAtualizacao = DateTime.Today
+            };
+
+            _produtoRepositorioMock
+                .Setup(x => x.ObterPorNome(nomeProduto))
+                .ReturnsAsync(produtoEsperado);
+
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Act
+            var produtoObtido = await produtoService.ObterProdutoPorNome(nomeProduto);
+
+            // Assert
+            Assert.IsNotNull(produtoObtido);
+            Assert.AreEqual(produtoEsperado, produtoObtido);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "O nome deve ser informado para essa busca")]
+        public async Task DeveLancarExcecaoQuandoNomeNulo()
+        {
+            // Arrange
+            string nomeProduto = "";
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Act
+            await produtoService.ObterProdutoPorNome(nomeProduto);
+
+            // Assert - Expects Exception
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Produto n√£o encontrado")]
+        public async Task DeveLancarExcecaoQuandoProdutoNaoEncontrado()
+        {
+            // Arrange
+            var nomeProduto = "Produto n√£o encontrado";
+            _produtoRepositorioMock.Setup(x => x.ObterPorNome(nomeProduto)).ReturnsAsync((Produto)null);
+
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Act
+            var produtoObtido = await produtoService.ObterProdutoPorNome(nomeProduto);
+
+            // Assert - Expects Exception
+        }
+
+        [TestMethod]
+        public async Task DeveInserirProdutoComSucesso()
+        {
+            // Arrange
+            var produto = new Produto { Nome = "Produto Teste", Valor = 10 };
+            var listaProdutosEsperados = new List<Produto>
+        {
+            produto
+        };
+
+            _produtoRepositorioMock.Setup(x => x.Adicionar(produto)).Verifiable();
+
+            _produtoRepositorioMock.Setup(x => x.ObterTodos()).ReturnsAsync(listaProdutosEsperados);
+
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Act
+            var listaProdutosObtidos = await produtoService.InserirProduto(produto);
+
+            // Assert
+            Assert.IsNotNull(listaProdutosObtidos);
+            CollectionAssert.AreEqual(listaProdutosEsperados, listaProdutosObtidos);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "O valor do produto n√£o pode ser negativo")]
+        public async Task DeveLancarExcecaoQuandoValorNegativo()
+        {
+            // Arrange
+            var produto = new Produto { Nome = "Produto Teste", Valor = -10 };
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Act
+
+            await produtoService.InserirProduto(produto);
+
+            // Assert - Expects Exception
+        }
+
+        [TestMethod]
+        public async Task DeveAtualizarProdutoComSucesso()
+        {
+            // Arrange
+            var produtoAtualizar = new Produto
+            {
+                Id = 1,
+                Nome = "Produto Teste Atualizado",
+                Valor = 20,
+                Estoque = 5,
+                Tipo = TipoEnum.Eletronico,
+                DataAtualizacao = DateTime.Now
+            };
+            var produtoBanco = new Produto
+            {
+                Id = 1,
+                Nome = "Produto Teste",
+                Valor = 10,
+                Estoque = 10,
+                Tipo = TipoEnum.Eletronico,
+                DataAtualizacao = DateTime.Now.AddDays(-1)
+            };
+            var listaProdutosEsperados = new List<Produto>
+            {
+                produtoBanco
+            };
+
+            _produtoRepositorioMock.Setup(x => x.ObterPorId(1)).ReturnsAsync(produtoBanco);
+
+            _produtoRepositorioMock.Setup(x => x.Atualizar(produtoBanco)).Verifiable();
+
+            _produtoRepositorioMock.Setup(x => x.ObterTodos()).ReturnsAsync(listaProdutosEsperados);
+
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Act
+            var listaProdutosObtidos = await produtoService.AtualizarProdutoPorId(produtoAtualizar);
+
+            // Assert
+            Assert.IsNotNull(listaProdutosObtidos);
+            CollectionAssert.AreEqual(listaProdutosEsperados, listaProdutosObtidos);
+            Assert.AreEqual(produtoAtualizar.Nome, produtoBanco.Nome);
+            Assert.AreEqual(produtoAtualizar.Valor, produtoBanco.Valor);
+            Assert.AreEqual(produtoAtualizar.Estoque, produtoBanco.Estoque);
+            Assert.AreEqual(produtoAtualizar.Tipo, produtoBanco.Tipo);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Erro ao atualizar o produto")]
+        public async Task DeveLancarExcecaoQuandoProdutoNaoExiste()
+        {
+            // Arrange
+            var produtoAtualizar = new Produto
+            {
+                Id = 1,
+                Nome = "Produto Teste Atualizado",
+                Valor = 20,
+                Estoque = 5,
+                Tipo = TipoEnum.Eletronico,
+                DataAtualizacao = DateTime.Now
+            };
+
+            _produtoRepositorioMock.Setup(x => x.ObterPorId(1)).ReturnsAsync((Produto)null);
+
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Act
+            var listaProdutosObtidos = await produtoService.AtualizarProdutoPorId(produtoAtualizar);
+
+            // Assert - Expects Exception
+        }
+
+        [TestMethod]
+        public async Task ExcluirProdutoPorId_Deve_Excluir_Produto_E_Retornar_Todos_Os_Produtos()
+        {
+            // Arrange
+            var id = 1;
+            var produto = new Produto 
+            { 
+                Id = id, 
+                Nome = "Produto Teste", 
+                Valor = 10.5m 
+            };
+            var produtos = new List<Produto>();
+            _produtoRepositorioMock.Setup(pr => pr.ObterPorId(id)).ReturnsAsync(produto);
+            _produtoRepositorioMock.Setup(pr => pr.ObterTodos()).ReturnsAsync(produtos);
+
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Act
+            var resultado = await produtoService.ExcluirProdutoPorId(id);
+
+            // Assert
+            Assert.AreEqual(produtos, resultado);
+        }
+
+        [TestMethod]
+        public async Task ExcluirProdutoPorId_Deve_Lancar_Excecao_Quando_Produto_Nao_Existir()
+        {
+            // Arrange
+            var id = 1;
+
+            Produto? produto = null;
+            _produtoRepositorioMock.Setup(pr => pr.ObterPorId(id)).ReturnsAsync(produto);
+
+            var produtoService = new ProdutosService(_produtoRepositorioMock.Object);
+
+            // Assert
+            await Assert.ThrowsExceptionAsync<Exception>(() => produtoService.ExcluirProdutoPorId(id));            
         }
     }
 }

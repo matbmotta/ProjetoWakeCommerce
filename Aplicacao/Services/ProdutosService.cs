@@ -20,11 +20,11 @@ namespace ProjetoWakeCommerce.Application.Services
         public async Task<List<Produto>> ObterProdutosOrdenados()
         {
             var listaProdutos = await ProdutoRepositorio.ObterTodos();
-            if (listaProdutos == null)
+            if (!listaProdutos.Any())
                 throw new Exception("Nenhum produto encontrado");
 
-            listaProdutos.OrderBy(p => p.Nome).ThenBy(p => p.Estoque);
-            return (List<Produto>)listaProdutos;
+            var listaOrdenada = listaProdutos.OrderBy(p => p.Nome).ThenBy(p => p.Estoque).ToList();
+            return listaOrdenada;
         }
 
         public async Task<Produto> ObterProdutoPorId(int id)
@@ -42,7 +42,7 @@ namespace ProjetoWakeCommerce.Application.Services
 
         public async Task<Produto> ObterProdutoPorNome(string nome)
         {
-            if (nome == null)
+            if (nome == "")
                 throw new Exception("O nome deve ser informado para essa busca");
 
             var produto = await ProdutoRepositorio.ObterPorNome(nome);
