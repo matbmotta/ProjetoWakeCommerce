@@ -1,7 +1,9 @@
-global using ProjetoWakeCommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using ProjetoWakeCommerce.Application.Interfaces;
 using ProjetoWakeCommerce.Application.Services;
+using ProjetoWakeCommerce.Repositorio.Interfaces;
+using ProjetoWakeCommerce.Repositorio.Repositorios;
+using WakeCommerce.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProdutosService, ProdutosService>();
+builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 
 //builder.Services.AddScoped<ITeste>();
 

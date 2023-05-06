@@ -5,7 +5,14 @@ namespace ProjetoWakeCommerce.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        public DataContext()
+        {
+
+        }
+
+        public DataContext(DbContextOptions options) : base(options)
+        {
+        }
 
         public DbSet<Produto> Produtos { get; set; }
     }
