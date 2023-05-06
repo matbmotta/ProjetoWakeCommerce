@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjetoWakeCommerce.Application.Interfaces;
-using ProjetoWakeCommerce.Data;
 using ProjetoWakeCommerce.Entidades;
 using ProjetoWakeCommerce.Repositorio.Interfaces;
 using ProjetoWakeCommerce.Repositorio.Repositorios;

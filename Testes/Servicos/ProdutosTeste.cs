@@ -2,7 +2,6 @@
 using Moq;
 using ProjetoWakeCommerce.Application.Interfaces;
 using ProjetoWakeCommerce.Application.Services;
-using ProjetoWakeCommerce.Data;
 using ProjetoWakeCommerce.Entidades;
 using ProjetoWakeCommerce.Repositorio.Interfaces;
 using ProjetoWakeCommerce.Repositorio.Repositorios;

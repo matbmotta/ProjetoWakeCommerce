@@ -1,9 +1,9 @@
-global using ProjetoWakeCommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using ProjetoWakeCommerce.Application.Interfaces;
 using ProjetoWakeCommerce.Application.Services;
 using ProjetoWakeCommerce.Repositorio.Interfaces;
 using ProjetoWakeCommerce.Repositorio.Repositorios;
+using WakeCommerce.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 

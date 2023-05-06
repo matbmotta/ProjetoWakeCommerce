@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
-using ProjetoWakeCommerce.Data;
 using ProjetoWakeCommerce.Repositorio.Interfaces;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using static ProjetoWakeCommerce.Data.ConexaoDataBase;
+using WakeCommerce.Database;
+
 namespace ProjetoWakeCommerce.Repositorio.Repositorios
 {
     public class RepositorioBase<T> : IRepositorioBase<T>, IDisposable where T : class
@@ -17,14 +17,6 @@ namespace ProjetoWakeCommerce.Repositorio.Repositorios
         public RepositorioBase(DataContext ctx)
         {
             _ctx = ctx;
-        }
-
-        protected RepositorioBase()
-        {
-            DbContextOptionsBuilder options = new DbContextOptionsBuilder();
-            var connection = Connection();
-            options.UseSqlServer(connection);
-            _ctx = new DataContext(options.Options);
         }
 
         public async Task<IEnumerable<T>> ObterTodos()
