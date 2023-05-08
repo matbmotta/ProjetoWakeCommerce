@@ -18,7 +18,7 @@ Este projeto consiste em uma API desenvolvida em .NET 6 utilizando Entity Framew
 Para executar a aplicação, é necessário ter o .NET 6 instalado em sua máquina. Além disso, é necessário clonar o repositório para a sua máquina local. Para clonar o repositório, utilize o seguinte comando:
 
 ```bash
-  git clone https://github.com/seu-usuario/wake-commerce.git
+  git clone https://github.com/matbmotta/ProjetoWakeCommerce.git
 ```    
 ## Executando a aplicação
 
