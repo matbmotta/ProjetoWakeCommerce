@@ -25,7 +25,7 @@ Para executar a aplicação, é necessário ter o .NET 6 instalado em sua máqui
 Para executar a aplicação, abra o terminal na pasta raiz do projeto e execute o seguinte comando:
 
 ```bash
-  dotnet run --project  WakeCommerce
+  dotnet run --project  ProjetoWakeCommerce
 ```
 Ou caso tenha o Visual Studio Instalado, abra a solution e rode o projeto.
 
