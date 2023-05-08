@@ -5,7 +5,6 @@ using ProjetoWakeCommerce.Application.Services;
 using ProjetoWakeCommerce.Entidades;
 using ProjetoWakeCommerce.Repositorio.Interfaces;
 using ProjetoWakeCommerce.Repositorio.Repositorios;
-using WakeCommerce.Tests.Mocks;
 using WakeCommerce.Utils.Enums;
 using Xunit.Sdk;
 
