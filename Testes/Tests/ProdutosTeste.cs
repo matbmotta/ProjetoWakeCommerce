@@ -103,7 +103,16 @@ namespace WakeCommerce.Tests.Servicos
             // Act
             var resultado = await produtoService.ObterProdutosOrdenados();
 
-            Assert.IsTrue(produtosEsperados.SequenceEqual(resultado));
+            // Assert
+            Assert.IsTrue(resultado[0].Id == produtosEsperados[0].Id);
+            Assert.IsTrue(resultado[0].Nome == produtosEsperados[0].Nome);
+            Assert.IsTrue(resultado[0].Estoque == produtosEsperados[0].Estoque);
+            Assert.IsTrue(resultado[1].Id == produtosEsperados[1].Id);
+            Assert.IsTrue(resultado[1].Nome == produtosEsperados[1].Nome);
+            Assert.IsTrue(resultado[1].Estoque == produtosEsperados[1].Estoque);
+            Assert.IsTrue(resultado[2].Id == produtosEsperados[2].Id);
+            Assert.IsTrue(resultado[2].Nome == produtosEsperados[2].Nome);
+            Assert.IsTrue(resultado[2].Estoque == produtosEsperados[2].Estoque);
         }
 
         [TestMethod]
@@ -187,9 +196,9 @@ namespace WakeCommerce.Tests.Servicos
             // Arrange
             var produto = new Produto { Nome = "Produto Teste", Valor = 10 };
             var listaProdutosEsperados = new List<Produto>
-        {
-            produto
-        };
+            {
+                produto
+            };
 
             _produtoRepositorioMock.Setup(x => x.Adicionar(produto)).Verifiable();
 
